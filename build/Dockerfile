@@ -5,13 +5,13 @@
 FROM golang:1.19
 
 # Der Port, welcher angesprochen können soll
-ENV PORT=8080
+ENV PORT=8008
 
 # Ein Verzeichnis für die App erstellen
 RUN mkdir /app
  
 # Alle Dateien vom derzeitigen Verzeichnis ins Docker-Verzeichnis kopieren
-COPY /src /app
+COPY /cmd /app
  
 # working directory setzen
 WORKDIR /app
