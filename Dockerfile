@@ -12,7 +12,8 @@ RUN mkdir /app
  
 # Alle Dateien vom derzeitigen Verzeichnis ins Docker-Verzeichnis kopieren
 COPY /cmd /app
- 
+COPY go.mod /app
+
 # working directory setzen
 WORKDIR /app
 
