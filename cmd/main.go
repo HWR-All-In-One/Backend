@@ -1,16 +1,25 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net/http"
+
+	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/core"
 )
 
-func index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hi there, welcome to %s!", r.URL.Path[1:])
-}
-
 func main() {
-	http.HandleFunc("/", index)
-	log.Fatal(http.ListenAndServe(":8008", nil))
+	app := pocketbase.New()
+
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.AddRoute(echo.Route{})
+
+		return nil
+	})
+
+	err := app.Start()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
