@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/HWR-All-In-One/Backend/internal/pkg/ctrl"
-	_ "github.com/HWR-All-In-One/Backend/internal/pkg/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 )
@@ -23,6 +22,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	app.InsertTimetableData()
 
 	err = app.Run()
 
