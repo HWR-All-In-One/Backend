@@ -1,7 +1,6 @@
 package timetable
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -60,7 +59,6 @@ func Parse() ([]Lesson, error) {
 		}
 
 		lessons = append(lessons, l)
-		fmt.Println(value.Summary)
 	}
 
 	return lessons, nil
