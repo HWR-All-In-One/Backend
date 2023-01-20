@@ -2,9 +2,9 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "main", "dev", "HAIO-91_Dockerfile_config" ]
+    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
   pull_request:
-    branches: [ "main", "dev", "HAIO-91_Dockerfile_config" ]
+    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
 
 jobs:
   build:
