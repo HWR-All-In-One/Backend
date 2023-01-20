@@ -7,7 +7,24 @@ on:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
 
 jobs:
-  build:
+  build-Go:
+
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Set up Go
+          uses: actions/setup-go@v3
+          with:
+            go-version: 1.19.5
+
+        - name: Build
+          working-directory: cmd
+          run: go build -o ../bin/main.exe
+
+        - name: Test
+          run: go test -v ./...
+  build-Docker:
     runs-on: ubuntu-latest
     steps:
       -
