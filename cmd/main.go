@@ -3,23 +3,32 @@ package main
 import (
 	"log"
 
-	"github.com/labstack/echo/v5"
+	"github.com/HWR-All-In-One/Backend/internal/pkg/ctrl"
 	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 )
 
 func main() {
-	app := pocketbase.New()
+	app := ctrl.App{
+		PB: pocketbase.New(),
+	}
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.AddRoute(echo.Route{})
-
-		return nil
+	migratecmd.MustRegister(app.PB, app.PB.RootCmd, &migratecmd.Options{
+		Automigrate: true, // auto creates migration files when making collection changes
 	})
 
-	err := app.Start()
+	err := app.PB.Bootstrap()
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	app.InsertTimetableData()
+
+	err = app.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
