@@ -1,12 +1,24 @@
 package timetable
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/apognu/gocal"
 )
+
+type Lesson struct {
+	Start       *time.Time
+	End         *time.Time
+	Description string
+	Summary     string
+	Location    string
+	Organizer   string
+	Type        string
+	Name        string
+}
 
 func Parse() ([]Lesson, error) {
 	lessons := make([]Lesson, 0)
@@ -48,6 +60,7 @@ func Parse() ([]Lesson, error) {
 		}
 
 		lessons = append(lessons, l)
+		fmt.Println(value.Summary)
 	}
 
 	return lessons, nil
