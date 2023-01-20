@@ -20,7 +20,7 @@ jobs:
 
         - name: Build
           working-directory: cmd
-          run: go build -o ../bin/main.exe
+          run: go build -v ./...
 
         - name: Test
           run: go test -v ./...
