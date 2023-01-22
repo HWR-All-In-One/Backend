@@ -16,7 +16,7 @@ jobs:
       -
         name: Login to GitHub Package Registry
         uses: docker/login-action@v1
-        width:
+        with:
           registry: ghcr.io
           username: ${{github.repository_owner}}
           password: ${{ secrets.CONTAINERREGISTRY_GITHUB_ACCESSTOKEN }} 
