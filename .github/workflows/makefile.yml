@@ -27,4 +27,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/hwr-all-in-one/backend:latest
+          tags: ghcr.io/hwr-all-in-one/backend:${{ GITHUB_BASE_REF }}latest
