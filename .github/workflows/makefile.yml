@@ -27,4 +27,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/hwraio/backend:latest
+          tags: ghcr.io/HWR-All-In-One/backend:latest
