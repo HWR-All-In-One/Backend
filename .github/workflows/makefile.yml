@@ -30,4 +30,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/hwr-all-in-one/backend:${{github.ref_name}}
+          tags: ghcr.io/hwr-all-in-one/backend:${{ IMAGE_TAG }}
