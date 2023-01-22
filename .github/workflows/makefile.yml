@@ -10,6 +10,11 @@ jobs:
   build-Docker:
     runs-on: ubuntu-latest
     steps:
+      - 
+        name: Branchname
+        run: |
+          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
       -
         name: Checkout
         uses: actions/checkout@v3
@@ -27,14 +32,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/hwr-all-in-one/backend:latest
-      - 
-        name: Branchname
-        run: |
-          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      - 
-        name: Use environment variables
-        run: |
-          echo "GIT_SHA=${GIT_SHA}"
-          echo "GIT_BRANCH=${GIT_BRANCH}"
+          tags: ghcr.io/hwr-all-in-one/backend:${GIT_BRANCH}
