@@ -1,11 +1,16 @@
-FROM alpine:latest
+FROM golang:1.19.5
 
-# Der Port, welcher angesprochen können soll
-ENV PORT=8090
+RUN mkdir /app
+WORKDIR /app
 
-COPY /bin/linux/filename /
+COPY go.mod .
+COPY go.sum .
+COPY /cmd/main.go .
+COPY /internal ./internal
 
-EXPOSE $PORT
+RUN go mod download
+RUN go build -o /godocker .
 
-# start PocketBase
-CMD ["filename", "serve"]
+EXPOSE 8090
+
+CMD ["/godocker", "serve"]
