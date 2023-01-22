@@ -18,7 +18,6 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          repository: HWR-All-In-One/Backend
           username: HWR-All-In-One
           password: ${{ secrets.GITHUB_TOKEN }} 
       -
