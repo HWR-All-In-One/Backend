@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
 
-env:
-  IMAGE_TAG: ${{ github_ref_name }}
-
 jobs:
   build-Docker:
     runs-on: ubuntu-latest
@@ -30,4 +27,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/hwr-all-in-one/backend:${{ IMAGE_TAG }}
+          tags: ghcr.io/hwr-all-in-one/backend:$GITHUB_REF
