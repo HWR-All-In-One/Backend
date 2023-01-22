@@ -1,5 +1,7 @@
 FROM golang:1.19.5
 
+ENV PORT 8090 
+
 RUN mkdir /app
 WORKDIR /app
 
@@ -11,6 +13,7 @@ COPY /internal ./internal
 RUN go mod download
 RUN go build -o /godocker .
 
-EXPOSE 8090
+EXPOSE $PORT
 
-CMD ["/godocker", "serve"]
+# Nicht als Array, weil so einfacher der Port als ENV genutzt werden kann
+CMD /godocker serve --http=0.0.0.0:$PORT
