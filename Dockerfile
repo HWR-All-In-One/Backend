@@ -1,20 +1,11 @@
-# syntax=docker/dockerfile:1
+FROM alpine:latest
 
-FROM golang:1.16-alpine
+# Der Port, welcher angesprochen können soll
+ENV PORT=8090
 
-WORKDIR /app
+COPY /bin/linux/filename /
 
-COPY ./cmd ./cmd
-COPY ./internal ./internal
+EXPOSE $PORT
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
-#COPY ./cmd ./
-
-RUN cd ./cmd && go build -o ../docker-gs-ping
-
-EXPOSE 8090
-
-CMD [ "/docker-gs-ping", "serve" ]
+# start PocketBase
+CMD ["filename", "serve"]
