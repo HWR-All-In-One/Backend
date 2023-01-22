@@ -7,7 +7,7 @@ on:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
 
 env:
-  IMAGE_TAG: ${{ ref_name }}
+  IMAGE_TAG: ${{ github_ref_name }}
 
 jobs:
   build-Docker:
