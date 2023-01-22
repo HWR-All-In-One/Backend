@@ -17,12 +17,10 @@ jobs:
         name: Login to GitHub Package Registry
         uses: macbre/push-to-ghcr@master
         with:
-          image_name: ${{ github.repository }}  # it will be lowercased internally
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          #registry: ghcr.io
-          #repository: HWR-All-In-One/Backend
-          #username: ${{ github.actor }} 
-          #password: ${{ secrets.GITHUB_TOKEN }} 
+          registry: ghcr.io
+          repository: HWR-All-In-One/Backend
+          username: HWR-All-In-One
+          password: ${{ secrets.GITHUB_TOKEN }} 
       -
         name: Build and push
         uses: docker/build-push-action@v3
