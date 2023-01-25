@@ -24,8 +24,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app.InsertTimetableData()
-
 	err = app.Run()
 
 	if err != nil {
