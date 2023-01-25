@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
 	ics "github.com/arran4/golang-ical"
-	"github.com/mitchellh/mapstructure"
 )
 
 type Timetable struct {
@@ -57,13 +57,21 @@ func (tt *Timetable) Parse() error {
 		}
 
 		desc["end"] = end.Format(time.RFC3339)
-		l := Lesson{}
-		err = mapstructure.Decode(desc, &l)
-
-		fmt.Println(err)
+		pause, err := strconv.Atoi(desc["pause"])
 
 		if err != nil {
 			return err
+		}
+
+		l := Lesson{
+			Start:   &start,
+			End:     &end,
+			Room:    desc["raum"],
+			Teacher: desc["dozent"],
+			Kind:    desc["art"],
+			Notice:  desc["anmerkung"],
+			Name:    desc["veranstaltung"],
+			Pause:   pause,
 		}
 
 		fmt.Println(l)

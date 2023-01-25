@@ -10,4 +10,5 @@ type Lesson struct {
 	Kind    string
 	Name    string
 	Pause   int
+	Notice  string
 }
