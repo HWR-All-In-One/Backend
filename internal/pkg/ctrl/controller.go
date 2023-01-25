@@ -6,6 +6,8 @@ import (
 	"github.com/pocketbase/pocketbase/models"
 )
 
+const URL = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/informatik/semester4/kursa"
+
 type App struct {
 	PB *pocketbase.PocketBase
 }
@@ -21,7 +23,9 @@ func (a *App) Run() error {
 }
 
 func (a *App) InsertTimetableData() error {
-	lessons, err := timetable.Parse()
+	tt := timetable.New(URL)
+
+	err := tt.Parse()
 
 	if err != nil {
 		return err
@@ -33,15 +37,13 @@ func (a *App) InsertTimetableData() error {
 		return err
 	}
 
-	for _, lesson := range lessons {
+	for _, lesson := range tt.Lessons {
 		record := models.NewRecord(collection)
 		record.Set("start", lesson.Start)
 		record.Set("end", lesson.End)
-		record.Set("description", lesson.Description)
-		record.Set("summary", lesson.Summary)
-		record.Set("location", lesson.Location)
-		record.Set("organizer", lesson.Organizer)
-		record.Set("type", lesson.Type)
+		record.Set("location", lesson.Room)
+		record.Set("organizer", lesson.Teacher)
+		record.Set("type", lesson.Kind)
 		record.Set("name", lesson.Name)
 
 		err := a.PB.Dao().SaveRecord(record)

@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/HWR-All-In-One/Backend/internal/pkg/ctrl"
+	_ "github.com/HWR-All-In-One/Backend/migrations"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 )
