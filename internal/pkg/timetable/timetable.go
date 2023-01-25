@@ -1,12 +1,10 @@
 package timetable
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 
 	ics "github.com/arran4/golang-ical"
 )
@@ -40,15 +38,11 @@ func (tt *Timetable) Parse() error {
 		const Description = 6
 		v := event.Properties[Description].Value
 		desc := tt.decodeDescription(v)
-		_ = desc
-
 		start, err := event.GetStartAt()
 
 		if err != nil {
 			return err
 		}
-
-		desc["start"] = start.Format(time.RFC3339)
 
 		end, err := event.GetEndAt()
 
@@ -56,7 +50,6 @@ func (tt *Timetable) Parse() error {
 			return err
 		}
 
-		desc["end"] = end.Format(time.RFC3339)
 		pause, err := strconv.Atoi(desc["pause"])
 
 		if err != nil {
@@ -74,7 +67,8 @@ func (tt *Timetable) Parse() error {
 			Pause:   pause,
 		}
 
-		fmt.Println(l)
+		tt.Lessons = append(tt.Lessons, &l)
+
 	}
 
 	return nil
