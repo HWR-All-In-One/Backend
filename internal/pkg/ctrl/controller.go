@@ -14,8 +14,10 @@ type Views struct {
 	Timetable *timetable.Environment
 }
 
-func New(pb *pocketbase.PocketBase) *App {
+func New() *App {
+	pb := pocketbase.New()
 	return &App{
+		PB: pb,
 		Views: &Views{
 			Timetable: &timetable.Environment{
 				PB: pb,

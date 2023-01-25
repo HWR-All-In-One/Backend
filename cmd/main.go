@@ -5,14 +5,11 @@ import (
 
 	"github.com/HWR-All-In-One/Backend/internal/pkg/ctrl"
 	_ "github.com/HWR-All-In-One/Backend/migrations"
-	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 )
 
 func main() {
-	app := ctrl.App{
-		PB: pocketbase.New(),
-	}
+	app := ctrl.New()
 
 	migratecmd.MustRegister(app.PB, app.PB.RootCmd, &migratecmd.Options{
 		Automigrate: true, // auto creates migration files when making collection changes
@@ -23,6 +20,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	app.AddTimetableRoutes()
 
 	err = app.Run()
 

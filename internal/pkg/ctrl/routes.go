@@ -13,7 +13,7 @@ func (a *App) AddTimetableRoutes() {
 		// or you can also use the shorter e.Router.GET("/articles/:slug", handler, middlewares...)
 		e.Router.AddRoute(echo.Route{
 			Method:  http.MethodGet,
-			Path:    "/timetable/list",
+			Path:    "/hwr/timetable/list",
 			Handler: a.Views.Timetable.List,
 			Middlewares: []echo.MiddlewareFunc{
 				apis.ActivityLogger(a.PB),
