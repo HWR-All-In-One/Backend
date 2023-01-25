@@ -9,51 +9,40 @@ import (
 	ics "github.com/arran4/golang-ical"
 )
 
-type Timetable struct {
-	URL     string
-	Lessons []*Lesson
-}
+const Description = 6
 
-func New(url string) *Timetable {
-	return &Timetable{
-		URL:     url,
-		Lessons: make([]*Lesson, 0),
-	}
-}
-
-func (tt *Timetable) Parse() error {
-	resp, err := http.Get(tt.URL)
+func Parse(url string) (*ics.Calendar, error) {
+	resp, err := http.Get(url)
 
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	cal, err := ics.ParseCalendar(resp.Body)
+	return ics.ParseCalendar(resp.Body)
+}
 
-	if err != nil {
-		return err
-	}
+func DecodeLessons(tt *ics.Calendar) ([]*Lesson, error) {
+	lessons := make([]*Lesson, 0)
 
-	for _, event := range cal.Events() {
-		const Description = 6
+	for _, event := range tt.Events() {
 		v := event.Properties[Description].Value
-		desc := tt.decodeDescription(v)
+		desc := decodeDescription(v)
 		start, err := event.GetStartAt()
 
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		end, err := event.GetEndAt()
 
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		pause, err := strconv.Atoi(desc["pause"])
 
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		l := Lesson{
@@ -67,14 +56,14 @@ func (tt *Timetable) Parse() error {
 			Pause:   pause,
 		}
 
-		tt.Lessons = append(tt.Lessons, &l)
+		lessons = append(lessons, &l)
 
 	}
 
-	return nil
+	return lessons, nil
 }
 
-func (Timetable) decodeDescription(desc string) map[string]string {
+func decodeDescription(desc string) map[string]string {
 	arr := strings.Split(desc, "\\n")
 	reg := regexp.MustCompile("[^0-9]+")
 	result := make(map[string]string)
