@@ -8,7 +8,7 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 )
 
-func (a *App) AddTimetableRoutes() {
+func (a *App) timetableRoute() {
 	a.PB.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.AddRoute(echo.Route{
 			Method:  http.MethodGet,
@@ -21,4 +21,8 @@ func (a *App) AddTimetableRoutes() {
 		return nil
 	})
 
+}
+
+func (a *App) AddRoutes() {
+	a.timetableRoute()
 }

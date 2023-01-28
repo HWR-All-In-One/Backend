@@ -21,7 +21,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app.AddTimetableRoutes()
+	app.AddRoutes()
+	app.AddHooks()
 
 	err = app.Run()
 
