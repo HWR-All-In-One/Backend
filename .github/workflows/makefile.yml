@@ -8,23 +8,23 @@ on:
   pull_request:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
 
-jobs:
-  versiontag:
-    runs-on: ubuntu-latest
-    steps:
-    - id: semver-tag
-      uses: gandarez/semver-action@vlatest
-      with:
-        prefix: ""
-        prerelease_id: "alpha"
-        main_branch_name: "main"
-        develop_branch_name: "dev"
-        debug: "false"
-    - name: "Created tag"
-      run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
+jobs:    
   build-Docker:
     runs-on: ubuntu-latest
     steps:
+      - 
+        name: versiontag
+        id: semver-tag
+        uses: gandarez/semver-action@v1
+        with:
+          prefix: ""
+          prerelease_id: "alpha"
+          main_branch_name: "main"
+          develop_branch_name: "dev"
+          debug: "false"
+      - name: "Created tag"
+        run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
+
       - 
         name: Branchname
         run: |
