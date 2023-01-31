@@ -13,6 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - 
+        name: Branchname
+        run: |
+          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
         name: versiontag
         id: semver-tag
         uses: gandarez/semver-action@v1.0.1
@@ -24,15 +32,6 @@ jobs:
           debug: "false"
       - name: "Created tag"
         run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
-
-      - 
-        name: Branchname
-        run: |
-          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      -
-        name: Checkout
-        uses: actions/checkout@v3
       -
         name: Docker meta
         id: meta
