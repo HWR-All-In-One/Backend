@@ -15,7 +15,7 @@ jobs:
       - 
         name: versiontag
         id: semver-tag
-        uses: gandarez/semver-action@v1
+        uses: gandarez/semver-action@v1.0.1
         with:
           prefix: ""
           prerelease_id: "alpha"
