@@ -54,7 +54,7 @@ jobs:
       -
         name: echo Version
         run: |
-          echo "version" >> $GITHUB_ENV
+          echo "${version}" >> $GITHUB_ENV
       -
         name: Docker meta
         id: meta
