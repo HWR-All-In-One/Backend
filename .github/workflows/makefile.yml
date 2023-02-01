@@ -7,10 +7,14 @@ on:
   #    - 'v*'
   pull_request:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
+    types: [closed]
 
 jobs:    
   build-Docker:
     runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged
+
     steps:
       - 
         name: Branchname
