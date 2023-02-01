@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         id: semver-tag
-        uses: gandarez/semver-action@vlatest
+        uses: gandarez/semver-action@latest
       - 
         name: "Created tag"
         run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
