@@ -11,7 +11,7 @@ on:
 
 jobs:    
   versiontag-dev:
-    if: ${{ (github.event.pull_request.merged == 'true') && (GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test') }}
+    if: ${{ GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
     
     steps: 
       -
