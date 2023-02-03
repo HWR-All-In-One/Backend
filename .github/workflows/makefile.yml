@@ -31,8 +31,9 @@ jobs:
         name: versiontag
         run: |
           if [[ $GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test']]; then
+            echo "NEED=true" >> "$GITHUB_ENV"
           else
-              echo "NEED=false" >> "$GITHUB_ENV"
+            echo "NEED=false" >> "$GITHUB_ENV"
           fi 
       - 
         name: Skip Deploy?
