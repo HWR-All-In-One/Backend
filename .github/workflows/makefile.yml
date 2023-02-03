@@ -41,21 +41,21 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: condSourceIsFeature
         with:
-          cond: ${{ startsWith( GITHUB_HEAD_REF, 'feature' }}
+          cond: ${{ startsWith( github.HEAD_REF, 'feature' }}
           if_true: "true"
           if_false: "false"
       - 
         uses: haya14busa/action-cond@v1
         id: condSourceIsSubeature
         with:
-          cond: ${{ startsWith( GITHUB_HEAD_REF, 'subfeature' }}
+          cond: ${{ startsWith( github.HEAD_REF, 'subfeature' }}
           if_true: "true"
           if_false: "false"
       - 
         uses: haya14busa/action-cond@v1
         id: condSourceIsBug
         with:
-          cond: ${{ startsWith( GITHUB_HEAD_REF, 'feature' }}
+          cond: ${{ startsWith( github.HEAD_REF, 'feature' }}
           if_true: "true"
           if_false: "false"
       - 
