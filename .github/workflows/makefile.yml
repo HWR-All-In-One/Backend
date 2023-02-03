@@ -13,6 +13,8 @@ jobs:
   versiontag-dev:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged && GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'}}
+    
+    steps: 
       -
         name: versiontag
         run: |
