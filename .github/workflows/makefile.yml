@@ -31,37 +31,37 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: condTargetIsDev
         with:
-        cond: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
-        if_true: "true"
-        if_false: "false"
+          cond: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
+          if_true: "true"
+          if_false: "false"
       - 
         uses: haya14busa/action-cond@v1
         id: condTargetIsMain
         with:
-        cond: ${{ github.base_ref == 'main' }}
-        if_true: "true"
-        if_false: "false"
+          cond: ${{ github.base_ref == 'main' }}
+          if_true: "true"
+          if_false: "false"
       - 
         uses: haya14busa/action-cond@v1
         id: condSourceIsFeature
         with:
-        cond: ${{ startsWith( GITHUB_HEAD_REF, 'feature' }}
-        if_true: "true"
-        if_false: "false"
+          cond: ${{ startsWith( GITHUB_HEAD_REF, 'feature' }}
+          if_true: "true"
+          if_false: "false"
       - 
         uses: haya14busa/action-cond@v1
         id: condSourceIsSubeature
         with:
-        cond: ${{ startsWith( GITHUB_HEAD_REF, 'subfeature' }}
-        if_true: "true"
-        if_false: "false"
+          cond: ${{ startsWith( GITHUB_HEAD_REF, 'subfeature' }}
+          if_true: "true"
+          if_false: "false"
       - 
         uses: haya14busa/action-cond@v1
         id: condSourceIsBug
         with:
-        cond: ${{ startsWith( GITHUB_HEAD_REF, 'feature' }}
-        if_true: "true"
-        if_false: "false"
+          cond: ${{ startsWith( GITHUB_HEAD_REF, 'feature' }}
+          if_true: "true"
+          if_false: "false"
       - 
         name: Use conditional value
         run: echo "${{ steps.condTargetIsDev.outputs.value }}"
