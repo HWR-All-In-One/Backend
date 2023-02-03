@@ -8,9 +8,10 @@ import (
 func (a *App) encryptHwrPaswordRecord() {
 	a.PB.OnRecordBeforeCreateRequest().Add(func(e *core.RecordCreateEvent) error {
 		if e.Record.Collection().Name == "users" {
+			key := a.Safe.Get()
+
 			hwrPassword := e.Record.GetString("hwr_password")
-			passwordHash := e.Record.GetString("passwordHash")
-			enc, err := encrypt.AESEncrypt(passwordHash, hwrPassword)
+			enc, err := encrypt.AESEncrypt(key, hwrPassword)
 
 			if err != nil {
 				return err

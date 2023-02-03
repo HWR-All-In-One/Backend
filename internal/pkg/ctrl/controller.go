@@ -2,12 +2,14 @@ package ctrl
 
 import (
 	"github.com/HWR-All-In-One/Backend/internal/app/timetable"
+	"github.com/HWR-All-In-One/Backend/internal/pkg/safe"
 	"github.com/pocketbase/pocketbase"
 )
 
 type App struct {
 	PB    *pocketbase.PocketBase
 	Views *Views
+	Safe  safe.Getter
 }
 
 type Views struct {
@@ -17,7 +19,8 @@ type Views struct {
 func New() *App {
 	pb := pocketbase.New()
 	return &App{
-		PB: pb,
+		PB:   pb,
+		Safe: safe.New(),
 		Views: &Views{
 			Timetable: &timetable.Environment{
 				PB: pb,
