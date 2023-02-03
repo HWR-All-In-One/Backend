@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
-      github.base_ref == github.DEV_BRANCH
+      github.base_ref == vars.DEV_BRANCH
     steps:
       -
         name: versiontag
@@ -33,7 +33,7 @@ jobs:
           echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
           echo HEAD_REF: $GITHUB_HEAD_REF
           echo BASE_REF: $GITHUB_BASE_REF
-          echo dev: $DEV_BRANCH
+          echo dev: ${{vars.DEV_BRANCH}}
         # example for $GITHUB_HEAD_REF and $GITHUB_BASE_REF:
         # When you merge from "feature/HAIO-96/CI_CD_einrichten_BE-2" to "feature/HAIO-96/CI_CD_einrichten_BE-2_Test"
         # HEAD_REF: feature/HAIO-96/CI_CD_einrichten_BE-2
