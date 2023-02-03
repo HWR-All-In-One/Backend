@@ -3,7 +3,7 @@ package ctrl
 import (
 	"errors"
 
-	"github.com/HWR-All-In-One/Backend/internal/pkg/encrypt"
+	aes "github.com/HWR-All-In-One/Backend/internal/pkg/aes"
 	"github.com/HWR-All-In-One/Backend/internal/pkg/hwr"
 	"github.com/pocketbase/pocketbase/core"
 )
@@ -25,7 +25,7 @@ func (a *App) encryptHwrPaswordRecord() {
 				return errors.New("user does not exist")
 			}
 
-			enc, err := encrypt.AESEncrypt(key, password)
+			enc, err := aes.Encrypt(key, password)
 
 			if err != nil {
 				return err
