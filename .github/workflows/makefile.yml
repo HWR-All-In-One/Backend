@@ -27,6 +27,12 @@ jobs:
         # When you merge from "feature/HAIO-96/CI_CD_einrichten_BE-2" to "feature/HAIO-96/CI_CD_einrichten_BE-2_Test"
         # HEAD_REF: feature/HAIO-96/CI_CD_einrichten_BE-2
         # BASE_REF: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
+
+      - 
+        name: Versiontag-dev
+        if: ${{GITHUB_BASE_REF}} == "feature/HAIO-96/CI_CD_einrichten_BE-2_Test"
+        run: |
+          echo "Hi, ich bin es"
       -
         name: Checkout
         uses: actions/checkout@v3
