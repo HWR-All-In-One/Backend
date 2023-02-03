@@ -1,10 +1,5 @@
 name: Makefile CI
 
-env:
-  MAIN_BRANCH: 'main' 
-  DEV_BRANCH: 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'
-  FEATURE_TAG_IN_BRANCH: 'feature/' 
-
 on:
   #push:
   #  branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
@@ -19,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
-      github.base_ref == env.DEV_BRANCH
+      github.base_ref == github.DEV_BRANCH
     steps:
       -
         name: versiontag
