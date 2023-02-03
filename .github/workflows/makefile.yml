@@ -1,5 +1,8 @@
 name: Makefile CI
 
+# Vars:
+# DEV_BRANCH = feature/HAIO-96/CI_CD_einrichten_BE-2_Test
+
 on:
   #push:
   #  branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
@@ -10,18 +13,11 @@ on:
     types: [closed]
 
 jobs:
-  githuboutput:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: devbranch
-        run: echo "Dev_BRANCH=${{vars.DEV_BRANCH}}" >> $GITHUB_OUTPUT
-
   versiontag-dev:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
-      github.base_ref == DEV_BRANCH
+      github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'
     steps:
       -
         name: versiontag
