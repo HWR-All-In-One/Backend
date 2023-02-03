@@ -10,6 +10,19 @@ on:
     types: [closed]
 
 jobs:    
+  versiontag-dev:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged && GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'}}
+      -
+        name: versiontag
+        run: |
+          echo "Dev"
+      
+      - 
+        name: Versiontag-dev
+        if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
+        run: |
+          echo "Hi, ich bin es"
   build-Docker:
     runs-on: ubuntu-latest
 
@@ -27,23 +40,6 @@ jobs:
         # When you merge from "feature/HAIO-96/CI_CD_einrichten_BE-2" to "feature/HAIO-96/CI_CD_einrichten_BE-2_Test"
         # HEAD_REF: feature/HAIO-96/CI_CD_einrichten_BE-2
         # BASE_REF: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
-      -
-        name: versiontag
-        run: |
-          if [[ $GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test']]; then
-            echo "NEED=true" >> "$GITHUB_ENV"
-          else
-            echo "NEED=false" >> "$GITHUB_ENV"
-          fi 
-      - 
-        name: Skip Deploy?
-        if: env.NEED != 'true'
-        run: echo "Only pushing to 'master' causes automatic deployment"
-      - 
-        name: Versiontag-dev
-        if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
-        run: |
-          echo "Hi, ich bin es"
       -
         name: Checkout
         uses: actions/checkout@v3
