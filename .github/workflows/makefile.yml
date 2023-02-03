@@ -17,7 +17,7 @@ on:
 jobs:    
   versiontag-dev:
     runs-on: ubuntu-latest
-    if: (github.event.pull_request.merged == 'true') && (github.base_ref == vars.DEV_BRANCH)
+    if: (github.event.pull_request.merged == 'true') && (github.base_ref == vars.dev_branch)
     
     steps: 
       -
