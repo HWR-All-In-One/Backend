@@ -18,8 +18,8 @@ jobs:
   versiontag-dev:
     runs-on: ubuntu-latest
     if: |
-      github.event.pull_request.merged || 
-      github.base_ref == vars.DEV_BRANCH
+      github.event.pull_request.merged && 
+      github.base_ref == DEV_BRANCH
     steps:
       -
         name: versiontag
