@@ -10,6 +10,21 @@ on:
     types: [closed]
 
 jobs:    
+  versiontag-dev:
+    runs-on: ubuntu-latest
+    if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test') }}
+    
+    steps: 
+      -
+        name: versiontag
+        run: |
+          echo "Dev"
+      
+      - 
+        name: Versiontag-dev
+        if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
+        run: |
+          echo "Hi, ich bin es"
   build-Docker:
     runs-on: ubuntu-latest
 
@@ -27,11 +42,6 @@ jobs:
         # When you merge from "feature/HAIO-96/CI_CD_einrichten_BE-2" to "feature/HAIO-96/CI_CD_einrichten_BE-2_Test"
         # HEAD_REF: feature/HAIO-96/CI_CD_einrichten_BE-2
         # BASE_REF: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
-      - 
-        name: Versiontag-dev
-        if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
-        run: |
-          echo "Hi, ich bin es"
       -
         name: Checkout
         uses: actions/checkout@v3
