@@ -24,16 +24,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-      - 
-        id: semver-tag
-        uses: gandarez/semver-action@v1.0.1
-      - 
-        name: "Created tag"
-        run: echo "tag ${{ steps.semver-tag.outputs.semver_tag }}"
-      -
-        name: echo Version
-        run: |
-          echo "${version}" >> $GITHUB_ENV
       -
         name: Docker meta
         id: meta
