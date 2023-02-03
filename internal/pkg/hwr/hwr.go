@@ -1,6 +1,7 @@
 package hwr
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
 )
@@ -9,7 +10,12 @@ const (
 	login = "https://webmail.stud.hwr-berlin.de/appsuite/api/login?"
 )
 
+type HWRError struct {
+	Error string `json:"error"`
+}
+
 func ValidateUser(username, password string) (bool, error) {
+	hwrError := &HWRError{}
 	form := url.Values{}
 	form.Add("action", "login")
 	form.Add("name", username)
@@ -20,5 +26,13 @@ func ValidateUser(username, password string) (bool, error) {
 		return false, err
 	}
 
-	return resp.StatusCode == 200, nil
+	dec := json.NewDecoder(resp.Body)
+
+	err = dec.Decode(hwrError)
+
+	if err != nil {
+		return false, err
+	}
+
+	return hwrError.Error == "", nil
 }
