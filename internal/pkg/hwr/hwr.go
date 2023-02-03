@@ -14,11 +14,11 @@ type HWRError struct {
 	Error string `json:"error"`
 }
 
-func ValidateUser(username, password string) (bool, error) {
+func ValidateUser(email, password string) (bool, error) {
 	hwrError := &HWRError{}
 	form := url.Values{}
 	form.Add("action", "login")
-	form.Add("name", username)
+	form.Add("name", email)
 	form.Add("password", password)
 	resp, err := http.PostForm(login, form)
 

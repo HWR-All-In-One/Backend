@@ -19,8 +19,8 @@ func (env *Environment) ValidateUser(e *core.RecordCreateEvent) error {
 	if e.Record.Collection().Name == "users" {
 		key := env.Safe.Get()
 		password := e.Record.GetString("hwr_password")
-		username := e.Record.GetString("hwr_email")
-		isValid, err := hwr.ValidateUser(username, password)
+		email := e.Record.GetString("hwr_email")
+		isValid, err := hwr.ValidateUser(email, password)
 
 		if err != nil {
 			return err
