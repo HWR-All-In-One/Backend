@@ -9,12 +9,18 @@ on:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
     types: [closed]
 
-jobs:    
+jobs:
+  githuboutput:
+    steps:
+      -
+        name: devbranch
+        run: echo "Dev_BRANCH=${{vars.DEV_BRANCH}}" >> $GITHUB_OUTPUT
+
   versiontag-dev:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
-      github.base_ref == vars.DEV_BRANCH
+      github.base_ref == DEV_BRANCH
     steps:
       -
         name: versiontag
