@@ -29,7 +29,7 @@ jobs:
         # BASE_REF: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
       - 
         name: Versiontag-dev
-        if: ${{GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'}}
+        if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
         run: |
           echo "Hi, ich bin es"
       -
