@@ -1,7 +1,10 @@
 package ctrl
 
 import (
+	"errors"
+
 	"github.com/HWR-All-In-One/Backend/internal/pkg/encrypt"
+	"github.com/HWR-All-In-One/Backend/internal/pkg/hwr"
 	"github.com/pocketbase/pocketbase/core"
 )
 
@@ -10,8 +13,19 @@ func (a *App) encryptHwrPaswordRecord() {
 		if e.Record.Collection().Name == "users" {
 			key := a.Safe.Get()
 
-			hwrPassword := e.Record.GetString("hwr_password")
-			enc, err := encrypt.AESEncrypt(key, hwrPassword)
+			password := e.Record.GetString("hwr_password")
+			username := e.Record.GetString("username")
+			isValid, err := hwr.ValidateUser(username, password)
+
+			if err != nil {
+				return err
+			}
+
+			if !isValid {
+				return errors.New("user does not exist")
+			}
+
+			enc, err := encrypt.AESEncrypt(key, password)
 
 			if err != nil {
 				return err
