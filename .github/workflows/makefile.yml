@@ -11,10 +11,12 @@ on:
 
 jobs:    
   versiontag-dev:
-    runs-on: ubuntu-latest
     if: ${{ (github.event.pull_request.merged == 'true') && (GITHUB_BASE_REF == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test') }}
     
     steps: 
+      -
+        name: Checkout
+        uses: actions/checkout@v3
       -
         name: versiontag
         run: |
