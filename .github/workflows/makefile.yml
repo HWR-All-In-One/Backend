@@ -1,8 +1,9 @@
 name: Makefile CI
 
 env:
-  MAIN-BRANCH: 'main' 
-  DEV-BRANCH: 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'
+  MAIN_BRANCH: 'main' 
+  DEV_BRANCH: 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'
+  FEATURE_TAG_IN_BRANCH: 'feature/' 
 
 on:
   #push:
@@ -16,7 +17,7 @@ on:
 jobs:    
   versiontag-dev:
     runs-on: ubuntu-latest
-    if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == DEV-BRANCH) }}
+    if: ${{ (github.event.pull_request.merged == 'true') && (github.base_ref == DEV_BRANCH) }}
     
     steps: 
       -
@@ -29,6 +30,13 @@ jobs:
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
         run: |
           echo "Hi, ich bin es"
+
+      -
+        name: dev-feature
+        if: ${{ contains(github.head_ref, env.FEATURE_TAG_IN_BRANCH) && (vars.BACKEND_VERSION_DEV_MAJOR == vars.BACKEND_VERSION_MAIN_MAJOR) && (vars.BACKEND_VERSION_DEV_MINOR == vars.BACKEND_VERSION_DEV_MINOR)}}
+        run: |
+          ${{ vars.BACKEND_VERSION_DEV_MINOR }} = ${{ vars.BACKEND_VERSION_DEV_MINOR }} + 1
+          echo ${{ vars.BACKEND_VERSION_DEV_MINOR }}
   build-Docker:
     runs-on: ubuntu-latest
 
