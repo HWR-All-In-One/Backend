@@ -14,7 +14,7 @@ func (a *App) encryptHwrPaswordRecord() {
 			key := a.Safe.Get()
 
 			password := e.Record.GetString("hwr_password")
-			username := e.Record.GetString("username")
+			username := e.Record.GetString("hwr_email")
 			isValid, err := hwr.ValidateUser(username, password)
 
 			if err != nil {
