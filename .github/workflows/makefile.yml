@@ -25,6 +25,7 @@ jobs:
           echo "Dev"
       - 
         uses: actions/checkout@v2
+      -
         name: use-bash
         run: |
           chmod +x ./public/scripts/test.sh
