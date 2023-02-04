@@ -40,14 +40,14 @@ elif [[$targetbranch == "dev"]]; then
     VERSION_DEV_BUILD=$build_now
 
     if [[$actualbranch == "$FEATURE_TAG_IN_BRANCH"* || $actualbranch == "$SUBFEATURE_TAG_IN_BRANCH"*]]; then
-        if [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -eq $VERSION_DEV_Patch]]
+        if [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -eq $VERSION_DEV_Patch]]; then
             VERSION_DEV_MINOR=$((VERSION_DEV_MINOR+1))
-        elif [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -ne $VERSION_DEV_Patch]]
+        elif [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -ne $VERSION_DEV_Patch]]; then
             VERSION_DEV_MINOR=$((VERSION_DEV_MINOR+1))
             VERSION_DEV_Patch=0
         fi
     elif [[$actualbranch == "$BUG_TAG_IN_BRANCH"* ]]; then
-        if [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -eq $VERSION_DEV_Patch]]
+        if [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -eq $VERSION_DEV_Patch]]; then
             VERSION_DEV_Patch=$((VERSION_DEV_Patch+1))
     fi
 fi
