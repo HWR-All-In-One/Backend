@@ -49,6 +49,7 @@ elif [[$targetbranch == "dev"]]; then
     elif [[$actualbranch == "$BUG_TAG_IN_BRANCH"* ]]; then
         if [[$VERSION_MAIN_MAJOR -eq $VERSION_DEV_MAJOR && $VERSION_MAIN_MINOR -eq $VERSION_DEV_MINOR && $VERSION_MAIN_Patch -eq $VERSION_DEV_Patch]]; then
             VERSION_DEV_Patch=$((VERSION_DEV_Patch+1))
+        fi
     fi
 fi
 
