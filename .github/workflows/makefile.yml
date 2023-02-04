@@ -29,7 +29,11 @@ jobs:
         name: use-bash
         run: |
           chmod +x ./scripts/action_versionnr.sh
-          bash ./scripts/action_versionnr.sh main
+          bash ./scripts/action_versionnr.sh main >> $GITHUB_ENV
+      -
+        name: output-bash-env
+        run: |
+          echo ${{ env.mainbranchexample }}
       - 
         name: Versiontag-dev
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
