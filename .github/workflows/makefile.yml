@@ -24,8 +24,11 @@ jobs:
         run: |
           echo "Dev"
       - 
+        uses: actions/checkout@v2
         name: use-bash
-        run:  bash ${GITHUB_WORKSPACE}/scripts/action_versionnr.sh ${{vars.MAIN_BRANCH}}
+        run: |
+          chmod +x ./public/scripts/test.sh
+          bash ./scripts/action_versionnr.sh main
       - 
         name: Versiontag-dev
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
