@@ -1,5 +1,12 @@
 #!/bin/bash
-# mainbranch, devbranch, FEATURE_TAG_IN_BRANCH, SUBFEATURE_TAG_IN_BRANCH, BUG_TAG_IN_BRANCH, VERSION_MAIN_MAJOR, VERSION_MAIN_MINOR, VERSION_MAIN_Patch, VERSION_MAIN_BUILD, VERSION_DEV_MAJOR, VERSION_DEV_MINOR, VERSION_DEV_Patch, VERSION_DEV_BUILD, VERSION_DEV_NR
+
+# Parameter:
+# actualbranch ($1), targetbranch ($2), mainbranch ($3), 
+# devbranch ($4), FEATURE_TAG_IN_BRANCH ($5), SUBFEATURE_TAG_IN_BRANCH ($6), 
+# BUG_TAG_IN_BRANCH ($7), VERSION_MAIN_MAJOR ($8), VERSION_MAIN_MINOR ($9), 
+# VERSION_MAIN_Patch ($10), VERSION_MAIN_BUILD ($11), VERSION_DEV_MAJOR ($12), 
+# VERSION_DEV_MINOR ($13), VERSION_DEV_Patch ($14), VERSION_DEV_BUILD ($15), 
+# VERSION_DEV_NR ($16), 
 
 echo "mainbranchexample=$1";
 # TODO: Need information about the actual branch and event
