@@ -24,43 +24,8 @@ jobs:
         run: |
           echo "Dev"
       - 
-        uses: haya14busa/action-cond@v1
-        id: condTargetIsDev
-        with:
-          cond: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
-          if_true: "true"
-          if_false: "false"
-      - 
-        uses: haya14busa/action-cond@v1
-        id: condTargetIsMain
-        with:
-          cond: ${{ github.base_ref == 'main' }}
-          if_true: "true"
-          if_false: "false"
-      - 
-        uses: haya14busa/action-cond@v1
-        id: condSourceIsFeature
-        with:
-          cond: ${{ startsWith( github.HEAD_REF, 'feature' ) }}
-          if_true: "true"
-          if_false: "false"
-      - 
-        uses: haya14busa/action-cond@v1
-        id: condSourceIsSubeature
-        with:
-          cond: ${{ startsWith( github.HEAD_REF, 'subfeature' ) }}
-          if_true: "true"
-          if_false: "false"
-      - 
-        uses: haya14busa/action-cond@v1
-        id: condSourceIsBug
-        with:
-          cond: ${{ startsWith( github.HEAD_REF, 'feature' ) }}
-          if_true: "true"
-          if_false: "false"
-      - 
-        name: Use conditional value
-        run: echo "${{ steps.condTargetIsDev.outputs.value }}"
+        name: use-bash
+        run:  bash ${GITHUB_WORKSPACE}/scripts/action_versionnr.sh ${{vars.MAIN_BRANCH}}
       - 
         name: Versiontag-dev
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
