@@ -28,7 +28,7 @@ jobs:
       -
         name: use-bash
         run: |
-          chmod +x ./public/scripts/test.sh
+          chmod +x ./scripts/action_versionnr.sh
           bash ./scripts/action_versionnr.sh main
       - 
         name: Versiontag-dev
