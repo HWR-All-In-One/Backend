@@ -51,6 +51,7 @@ jobs:
         name: Print repository variables
         run: |
           echo ${{ vars.BACKEND_VERSION_MAIN_MAJOR }}
+          echo ${{ vars.BACKEND_VERSION_DEV_BUILD }}
       - 
         name: Versiontag-dev
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
