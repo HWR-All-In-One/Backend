@@ -4,8 +4,10 @@ name: Makefile CI
 # DEV_BRANCH = feature/HAIO-96/CI_CD_einrichten_BE-2_Test
 
 on:
-  push:
-    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
+  workflow_run:
+    workflows: [Update Version File]
+    types:
+      - completed
   #pull_request:
   #  branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
   #  types: [closed]
@@ -35,8 +37,6 @@ jobs:
 
   read:
     runs-on: ubuntu-latest
-    if: |
-      github.event.head_commit.message == 'Update Version by Github Actions'
       
     steps:
       - name: Checkout repository
