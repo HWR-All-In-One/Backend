@@ -32,8 +32,7 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-
-        read:
+        
   read:
     runs-on: ubuntu-latest
     if: |
