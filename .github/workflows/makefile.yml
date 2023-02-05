@@ -46,6 +46,7 @@ jobs:
         name: Update repository variables
         run: | 
           BACKEND_VERSION_MAIN_MAJOR=${{ env.VERSION_MAIN_MAJOR }}
+          BACKEND_VERSION_DEV_BUILD=${{ env.VERSION_DEV_BUILD }}
       - 
         name: Print repository variables
         run: |
