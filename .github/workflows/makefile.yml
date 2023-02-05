@@ -51,7 +51,7 @@ jobs:
         uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
-          route: PATCH /repos/{owner}/{repo}/actions/variables/VERSION_DEV_BUILD
+          route: PATCH /repos/HWR-All-In-One/{repo}/actions/variables/VERSION_DEV_BUILD
           owner: octokit
           repo: request-action
           check_run_id: ${{ fromJson(env.VERSION_DEV_BUILD).id }}
