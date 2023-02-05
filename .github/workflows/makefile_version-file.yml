@@ -75,6 +75,9 @@ jobs:
         with:
           ref: ${{ github.base_ref }}
 
+      - run: |
+          git pull
+
       - name: Read package.json
         id: package
         uses: juliangruber/read-file-action@v1
