@@ -8,6 +8,69 @@ on:
     types: [closed]
 
 jobs:
+  versiontag-dev:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged && 
+      github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test'
+    steps:
+      -
+        name: versiontag
+        run: |
+          echo "Dev"
+      - 
+        uses: actions/checkout@v2
+      -
+        name: use-bash
+        run: |
+          chmod +x ./scripts/action_versionnr.sh
+          bash ./scripts/action_versionnr.sh "$GITHUB_HEAD_REF" "$GITHUB_BASE_REF" "${{vars.MAIN_BRANCH}}" "${{vars.DEV_BRANCH}}" "${{vars.FEATURE_TAG_IN_BRANCH}}" "${{vars.SUBFEATURE_TAG_IN_BRANCH}}" "${{vars.BUG_TAG_IN_BRANCH}}" "${{vars.BACKEND_VERSION_MAIN_MAJOR}}" "${{vars.BACKEND_VERSION_MAIN_MINOR}}" "${{vars.BACKEND_VERSION_MAIN_PATCH}}" "${{vars.BACKEND_VERSION_MAIN_BUILD}}" "${{vars.BACKEND_VERSION_DEV_MAJOR}}" "${{vars.BACKEND_VERSION_DEV_MINOR}}" "${{vars.BACKEND_VERSION_DEV_PATCH}}" "${{vars.BACKEND_VERSION_DEV_BUILD}}" "${{vars.BACKEND_VERSION_DEV_NR}}" "${{ github.run_number }}" >> $GITHUB_ENV
+      -
+        name: output-bash-env
+        run: |
+          echo ${{ env.VERSION_MAIN_MAJOR }}
+          echo ${{ env.VERSION_MAIN_MINOR }}
+          echo ${{ env.VERSION_MAIN_Patch }}
+          echo ${{ env.VERSION_MAIN_BUILD }}
+          echo ${{ env.VERSION_DEV_MAJOR }}
+          echo ${{ env.VERSION_DEV_MINOR }}
+          echo ${{ env.VERSION_DEV_Patch }}
+          echo ${{ env.VERSION_DEV_BUILD }}
+          echo ${{ env.VERSION_DEV_NR }}
+      #-
+      #  name: Update repository variables
+      #  run: | 
+      #    vars.BACKEND_VERSION_MAIN_MAJOR=$env.VERSION_MAIN_MAJOR
+      #    vars.BACKEND_VERSION_DEV_BUILD=$env.VERSION_DEV_BUILD
+      - 
+        uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+          route: GET /repos/{owner}/{repo}/actions/variables/{name}
+          owner: HWR-All-In-One
+          repo: Backend
+          name: BACKEND_VERSION_DEV_BUILD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
+      - 
+        name: Print repository variables
+        run: |
+          echo ${{ vars.BACKEND_VERSION_MAIN_MAJOR }}
+          echo ${{ vars.BACKEND_VERSION_DEV_BUILD }}
+      - 
+        name: Overwrite file
+        uses: "DamianReeves/write-file-action@master"
+        with:
+          path: ./version.json
+          write-mode: overwrite
+          contents: |
+            {"VERSION_MAIN_MAJOR": ${{ env.VERSION_MAIN_MAJOR }}, "VERSION_MAIN_MINOR": ${{ env.VERSION_MAIN_MINOR }}}
+      - 
+        name: Versiontag-dev
+        if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
+        run: |
+          echo "Hi, ich bin es"
   read:
 
     runs-on: ubuntu-latest
@@ -24,7 +87,7 @@ jobs:
           path: ./version.json
           write-mode: overwrite
           contents: |
-            {"main_major": 0,\n"dev_major": 0}
+            {"main_major": 0, "dev_major": 0}
             
       - name: Commit & Push
         uses: Andro999b/push@v1.3
@@ -32,7 +95,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
           force: true
-          message: 'Overwritten by Github Actions - ${date}'
+          message: 'Update version by Github Actions'
 
       - name: Read package.json
         id: package
