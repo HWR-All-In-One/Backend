@@ -17,11 +17,12 @@ jobs:
 
       - name: Read package.json
         id: package
-        uses: juliangruber/read-file-action@v1
+        uses: rgarcia-phi/json-to-variables@v1.1.0
         with:
-          path: ./version.json
-      - name: Echo package.json
-        run: echo "${{ steps.package.outputs.content }}" >> "$GITHUB_ENV"
+          filename: ./version.json
+          prefix: fromFile
+      #- name: Echo package.json
+      #  run: echo "${{ steps.package.outputs.content }}" >> "$GITHUB_ENV"
 
   versiontag:
     runs-on: ubuntu-latest
@@ -39,7 +40,7 @@ jobs:
         name: use-bash
         run: |
           chmod +x ./scripts/action_versionnr.sh
-          bash ./scripts/action_versionnr.sh "$GITHUB_HEAD_REF" "$GITHUB_BASE_REF" "${{vars.MAIN_BRANCH}}" "${{vars.DEV_BRANCH}}" "${{vars.FEATURE_TAG_IN_BRANCH}}" "${{vars.SUBFEATURE_TAG_IN_BRANCH}}" "${{vars.BUG_TAG_IN_BRANCH}}" "${{env.VERSION_MAIN_MAJOR}}" "${{env.VERSION_MAIN_MINOR}}" "${{env.VERSION_MAIN_PATCH}}" "${{env.VERSION_MAIN_BUILD}}" "${{env.VERSION_DEV_MAJOR}}" "${{env.VERSION_DEV_MINOR}}" "${{env.VERSION_DEV_PATCH}}" "${{env.VERSION_DEV_BUILD}}" "${{env.VERSION_DEV_NR}}" "${{ github.run_number }}" >> $GITHUB_ENV
+          bash ./scripts/action_versionnr.sh "$GITHUB_HEAD_REF" "$GITHUB_BASE_REF" "${{vars.MAIN_BRANCH}}" "${{vars.DEV_BRANCH}}" "${{vars.FEATURE_TAG_IN_BRANCH}}" "${{vars.SUBFEATURE_TAG_IN_BRANCH}}" "${{vars.BUG_TAG_IN_BRANCH}}" "${{env.fromFileVERSION_MAIN_MAJOR}}" "${{env.fromFileVERSION_MAIN_MINOR}}" "${{env.fromFileVERSION_MAIN_PATCH}}" "${{env.fromFileVERSION_MAIN_BUILD}}" "${{env.fromFileVERSION_DEV_MAJOR}}" "${{env.fromFileVERSION_DEV_MINOR}}" "${{env.fromFileVERSION_DEV_PATCH}}" "${{env.fromFileVERSION_DEV_BUILD}}" "${{env.fromFileVERSION_DEV_NR}}" "${{ github.run_number }}" >> $GITHUB_ENV
       -
         name: output-bash-env
         run: |
