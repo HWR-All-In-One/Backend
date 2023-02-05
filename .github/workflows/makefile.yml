@@ -51,12 +51,12 @@ jobs:
         uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
-          route: PATCH /repos/{owner}/{repo}/actions/variables/VERSION_DEV_BUILD
+          route: GET /repos/{owner}/{repo}/stats/code_frequency
           owner: HWR-All-In-One
           repo: Backend
-          check_run_id: ${{ fromJson(env.VERSION_DEV_BUILD).id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
       - 
         name: Print repository variables
         run: |
