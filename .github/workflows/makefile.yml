@@ -4,13 +4,11 @@ name: Makefile CI
 # DEV_BRANCH = feature/HAIO-96/CI_CD_einrichten_BE-2_Test
 
 on:
-  #push:
-  #  branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2" ]
-  #  tags:
-  #    - 'v*'
-  pull_request:
-    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
-    types: [closed]
+  push:
+    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
+  #pull_request:
+  #  branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
+  #  types: [closed]
 
 jobs:
   build-Docker:
@@ -34,3 +32,21 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
+
+        read:
+  read:
+    runs-on: ubuntu-latest
+    if: |
+      ${{ github.event.head_commit.message }} == "Update Version by Github Actions"
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Read package.json
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./version.json
+      - name: Echo package.json
+        run: echo "${{ steps.package.outputs.content }}"
