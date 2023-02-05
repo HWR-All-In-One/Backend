@@ -1,8 +1,6 @@
 name: Update Version File
 
 on:
-  push:
-    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
   pull_request:
     branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
     types: [closed]
@@ -56,6 +54,14 @@ jobs:
           contents: |
             {"VERSION_MAIN_MAJOR": ${{ env.VERSION_MAIN_MAJOR }}, "VERSION_MAIN_MINOR": ${{ env.VERSION_MAIN_MINOR }}}
       - 
+        name: Commit & Push
+        uses: Andro999b/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
+          force: true
+          message: 'Update Version by Github Actions'
+      - 
         name: Versiontag-dev
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
         run: |
@@ -69,22 +75,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Overwrite file
-        uses: "DamianReeves/write-file-action@master"
-        with:
-          path: ./version.json
-          write-mode: overwrite
-          contents: |
-            {"main_major": 0, "dev_major": 0}
-            
-      - name: Commit & Push
-        uses: Andro999b/push@v1.3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
-          force: true
-          message: 'Update version by Github Actions'
 
       - name: Read package.json
         id: package
