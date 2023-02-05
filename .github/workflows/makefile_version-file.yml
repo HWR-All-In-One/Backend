@@ -61,8 +61,8 @@ jobs:
       - 
         name: Print repository variables
         run: |
-          echo ${{ vars.BACKEND_VERSION_MAIN_MAJOR }}
-          echo ${{ vars.BACKEND_VERSION_DEV_BUILD }}
+          echo ${{ env.BACKEND_VERSION_MAIN_MAJOR }}
+          echo ${{ env.BACKEND_VERSION_DEV_BUILD }}
       - 
         name: Overwrite file
         uses: "DamianReeves/write-file-action@master"
