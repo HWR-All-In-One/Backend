@@ -25,11 +25,17 @@ jobs:
           echo "Dev"
       - 
         uses: actions/checkout@v2
+      - name: Output Run ID
+        run: echo ${{ github.run_id }}
+      - name: Output Run Number
+        run: echo ${{ github.run_number }}
+      - name: Output Run Attempt
+        run: echo ${{ github.run_attempt }}
       -
         name: use-bash
         run: |
           chmod +x ./scripts/action_versionnr.sh
-          bash ./scripts/action_versionnr.sh "$GITHUB_HEAD_REF" "$GITHUB_BASE_REF" "${{vars.MAIN_BRANCH}}" "${{vars.DEV_BRANCH}}" "${{vars.FEATURE_TAG_IN_BRANCH}}" "${{vars.SUBFEATURE_TAG_IN_BRANCH}}" "${{vars.BUG_TAG_IN_BRANCH}}" "${{vars.BACKEND_VERSION_MAIN_MAJOR}}" "${{vars.BACKEND_VERSION_MAIN_MINOR}}" "${{vars.BACKEND_VERSION_MAIN_PATCH}}" "${{vars.BACKEND_VERSION_MAIN_BUILD}}" "${{vars.BACKEND_VERSION_DEV_MAJOR}}" "${{vars.BACKEND_VERSION_DEV_MINOR}}" "${{vars.BACKEND_VERSION_DEV_PATCH}}" "${{vars.BACKEND_VERSION_DEV_BUILD}}" "${{vars.BACKEND_VERSION_DEV_NR}}" "${{ github.GITHUB_RUN_ID }}" >> $GITHUB_ENV
+          bash ./scripts/action_versionnr.sh "$GITHUB_HEAD_REF" "$GITHUB_BASE_REF" "${{vars.MAIN_BRANCH}}" "${{vars.DEV_BRANCH}}" "${{vars.FEATURE_TAG_IN_BRANCH}}" "${{vars.SUBFEATURE_TAG_IN_BRANCH}}" "${{vars.BUG_TAG_IN_BRANCH}}" "${{vars.BACKEND_VERSION_MAIN_MAJOR}}" "${{vars.BACKEND_VERSION_MAIN_MINOR}}" "${{vars.BACKEND_VERSION_MAIN_PATCH}}" "${{vars.BACKEND_VERSION_MAIN_BUILD}}" "${{vars.BACKEND_VERSION_DEV_MAJOR}}" "${{vars.BACKEND_VERSION_DEV_MINOR}}" "${{vars.BACKEND_VERSION_DEV_PATCH}}" "${{vars.BACKEND_VERSION_DEV_BUILD}}" "${{vars.BACKEND_VERSION_DEV_NR}}" "${{ GITHUB_RUN_NUMBER }}" >> $GITHUB_ENV
       -
         name: output-bash-env
         run: |
