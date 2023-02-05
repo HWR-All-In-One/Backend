@@ -44,8 +44,8 @@ jobs:
           echo ${{ env.VERSION_DEV_NR }}
       -
         name: Update repository variables
-        run: |
-          vars.BACKEND_VERSION_MAIN_MAJOR: env.VERSION_MAIN_MAJOR
+        with: 
+          vars.BACKEND_VERSION_MAIN_MAJOR: ${{ env.VERSION_MAIN_MAJOR }}
       - 
         name: Print repository variables
         run: |
