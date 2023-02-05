@@ -66,19 +66,19 @@ jobs:
         if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
         run: |
           echo "Hi, ich bin es"
-    read:
-      runs-on: ubuntu-latest
-        
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v3
-          with:
-            ref: $GITHUB_BASE_REF
+  read:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: $GITHUB_BASE_REF
 
-        - name: Read package.json
-          id: package
-          uses: juliangruber/read-file-action@v1
-          with:
-            path: ./version.json
-        - name: Echo package.json
-          run: echo "${{ steps.package.outputs.content }}"
+      - name: Read package.json
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./version.json
+      - name: Echo package.json
+        run: echo "${{ steps.package.outputs.content }}"
