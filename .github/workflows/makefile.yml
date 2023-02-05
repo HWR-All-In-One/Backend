@@ -32,11 +32,11 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-        
+
   read:
     runs-on: ubuntu-latest
     if: |
-      ${{ github.event.head_commit.message }} == "Update Version by Github Actions"
+      github.event.head_commit.message == 'Update Version by Github Actions'
       
     steps:
       - name: Checkout repository
