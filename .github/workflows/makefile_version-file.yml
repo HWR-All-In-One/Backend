@@ -8,7 +8,7 @@ on:
     types: [closed]
 
 jobs:
-  versiontag-dev:
+  versiontag:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
@@ -42,17 +42,6 @@ jobs:
       #  run: | 
       #    vars.BACKEND_VERSION_MAIN_MAJOR=$env.VERSION_MAIN_MAJOR
       #    vars.BACKEND_VERSION_DEV_BUILD=$env.VERSION_DEV_BUILD
-      - 
-        uses: octokit/request-action@v2.x
-        id: get_latest_release
-        with:
-          route: GET /repos/{owner}/{repo}/actions/variables/{name}
-          owner: HWR-All-In-One
-          repo: Backend
-          name: BACKEND_VERSION_DEV_BUILD
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
       - 
         name: Print repository variables
         run: |
