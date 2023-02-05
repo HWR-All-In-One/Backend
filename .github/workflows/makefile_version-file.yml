@@ -52,7 +52,7 @@ jobs:
           path: ./version.json
           write-mode: overwrite
           contents: |
-            {"VERSION_MAIN_MAJOR": ${{ env.VERSION_MAIN_MAJOR }}, "VERSION_MAIN_MINOR": ${{ env.VERSION_MAIN_MINOR }}}
+            {"VERSION_MAIN_MAJOR": ${{ env.VERSION_MAIN_MAJOR }}, "VERSION_MAIN_MINOR": ${{ env.VERSION_MAIN_MINOR }}, "VERSION_MAIN_Patch": ${{ env.VERSION_MAIN_Patch }}, "VERSION_MAIN_BUILD": ${{ env.VERSION_MAIN_BUILD }}, "VERSION_DEV_MAJOR": ${{ env.VERSION_DEV_MAJOR }}, "VERSION_DEV_MINOR": ${{ env.VERSION_DEV_MINOR }}, "VERSION_DEV_Patch": ${{ env.VERSION_DEV_Patch }}, "VERSION_DEV_BUILD": ${{ env.VERSION_DEV_BUILD }}, "VERSION_DEV_NR": ${{ env.VERSION_DEV_NR }}}
       - 
         name: Commit & Push
         uses: Andro999b/push@v1.3
