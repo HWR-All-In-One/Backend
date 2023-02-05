@@ -17,6 +17,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Overwrite file
+        uses: "DamianReeves/write-file-action@master"
+        with:
+          path: ./version.json
+          write-mode: overwrite
+          contents: |
+            {"main_major": 0,\n"dev_major": 0}
+            
+      - name: Commit & Push
+        uses: Andro999b/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: feature/HAIO-96/CI_CD_einrichten_BE-2_Test
+          force: true
+          message: 'Overwritten by Github Actions - ${date}'
+
       - name: Read package.json
         id: package
         uses: juliangruber/read-file-action@v1
