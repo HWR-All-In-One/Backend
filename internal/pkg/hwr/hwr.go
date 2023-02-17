@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	login = "https://webmail.stud.hwr-berlin.de/appsuite/api/login?"
+	login = "https://webmail.stud.hwr-berlin.de/appsuite/api/login"
 )
 
 type HWRError struct {

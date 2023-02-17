@@ -12,7 +12,7 @@ func (a *App) timetableRoute() {
 	a.PB.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.AddRoute(echo.Route{
 			Method:  http.MethodGet,
-			Path:    "/api/hwr/timetable/list",
+			Path:    "/api/hwr/timetable/list/:course/:year/:kurs",
 			Handler: a.Views.Timetable.List,
 			Middlewares: []echo.MiddlewareFunc{
 				apis.ActivityLogger(a.PB),
