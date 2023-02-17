@@ -44,15 +44,15 @@ jobs:
       -
         name: output-bash-env
         run: |
-          echo ${{ env.VERSION_MAIN_MAJOR }}
-          echo ${{ env.VERSION_MAIN_MINOR }}
-          echo ${{ env.VERSION_MAIN_Patch }}
-          echo ${{ env.VERSION_MAIN_BUILD }}
-          echo ${{ env.VERSION_DEV_MAJOR }}
-          echo ${{ env.VERSION_DEV_MINOR }}
-          echo ${{ env.VERSION_DEV_Patch }}
-          echo ${{ env.VERSION_DEV_BUILD }}
-          echo ${{ env.VERSION_DEV_NR }}
+          echo "${{ env.VERSION_MAIN_MAJOR }}"
+          echo "${{ env.VERSION_MAIN_MINOR }}"
+          echo "${{ env.VERSION_MAIN_Patch }}"
+          echo "${{ env.VERSION_MAIN_BUILD }}"
+          echo "${{ env.VERSION_DEV_MAJOR }}"
+          echo "${{ env.VERSION_DEV_MINOR }}"
+          echo "${{ env.VERSION_DEV_Patch }}"
+          echo "${{ env.VERSION_DEV_BUILD }}"
+          echo "${{ env.VERSION_DEV_NR }}"
       #-
       #  name: Update repository variables
       #  run: | 
