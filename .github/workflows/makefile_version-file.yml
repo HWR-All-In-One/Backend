@@ -45,7 +45,7 @@ jobs:
         name: Correct env vars tag
         run: |
           if [ -z "${{ env.VERSION_MAIN_MAJOR }}" ]; then
-             echo "env.VERSION_MAIN_MAJOR="0"" >> $GITHUB_ENV
+             echo "VERSION_MAIN_MAJOR="0"" >> $GITHUB_ENV
           fi
       -
         name: output-bash-env
