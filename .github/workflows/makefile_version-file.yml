@@ -149,4 +149,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},dev-latest
-          labels: hwr-all-in-one/backend
+          labels: HWR-All-In-One/Backend
