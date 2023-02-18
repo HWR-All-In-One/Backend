@@ -148,4 +148,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/backend:${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},ghcr.io/${{ github.repository_owner }}/backend:dev-latest
+          tags: ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},ghcr.io/hwr-all-in-one/backend:dev-latest
