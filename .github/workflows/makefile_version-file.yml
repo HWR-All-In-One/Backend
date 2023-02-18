@@ -44,7 +44,7 @@ jobs:
       -
         name: Correct env vars tag
         run: |
-          if [ -z "${ env.VERSION_MAIN_MAJOR }" ]; then
+          if [ -z "${{ env.VERSION_MAIN_MAJOR }}" ]; then
              env.VERSION_MAIN_MAJOR="0"
           fi
       -
