@@ -47,6 +47,30 @@ jobs:
           if [ -z "${{ env.VERSION_MAIN_MAJOR }}" ]; then
              echo "VERSION_MAIN_MAJOR="0"" >> $GITHUB_ENV
           fi
+          if [ -z "${{ env.VERSION_MAIN_MINOR }}" ]; then
+             echo "VERSION_MAIN_MINOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_MAIN_Patch }}" ]; then
+             echo "VERSION_MAIN_Patch="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_MAIN_BUILD }}" ]; then
+             echo "VERSION_MAIN_BUILD="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_MAJOR }}" ]; then
+             echo "VERSION_DEV_MAJOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_MINOR }}" ]; then
+             echo "VERSION_DEV_MINOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_Patch }}" ]; then
+             echo "VERSION_DEV_Patch="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_BUILD }}" ]; then
+             echo "VERSION_DEV_BUILD="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_NR }}" ]; then
+             echo "VERSION_DEV_NR="0"" >> $GITHUB_ENV
+          fi
       -
         name: output-bash-env
         run: |
