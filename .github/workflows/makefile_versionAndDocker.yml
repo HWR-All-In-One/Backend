@@ -1,0 +1,122 @@
+name: Update Version File And Docker
+
+on:
+  pull_request:
+    branches: [ "main", "dev", "feature/HAIO-96/CI_CD_einrichten_BE-2", "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]
+    types: [closed]
+
+jobs:
+  read-version-file:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
+
+      - name: Read package.json
+        id: package
+        uses: rgarcia-phi/json-to-variables@v1.1.0
+        with:
+          filename: ./version.json
+          prefix: fromFile
+
+  versiontag-and-docker:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged && 
+      (github.base_ref == vars.MAIN_BRANCH || github.base_ref == vars.DEV_BRANCH )
+    steps:
+      - 
+        uses: actions/checkout@v2
+      -
+        name: use-bash
+        run: |
+          chmod +x ./scripts/action_versionnr.sh
+          bash ./scripts/action_versionnr.sh "$GITHUB_HEAD_REF" "$GITHUB_BASE_REF" "${{vars.MAIN_BRANCH}}" "${{vars.DEV_BRANCH}}" "${{vars.FEATURE_TAG_IN_BRANCH}}" "${{vars.SUBFEATURE_TAG_IN_BRANCH}}" "${{vars.BUG_TAG_IN_BRANCH}}" "${{env.fromFileVERSION_MAIN_MAJOR}}" "${{env.fromFileVERSION_MAIN_MINOR}}" "${{env.fromFileVERSION_MAIN_PATCH}}" "${{env.fromFileVERSION_MAIN_BUILD}}" "${{env.fromFileVERSION_DEV_MAJOR}}" "${{env.fromFileVERSION_DEV_MINOR}}" "${{env.fromFileVERSION_DEV_PATCH}}" "${{env.fromFileVERSION_DEV_BUILD}}" "${{env.fromFileVERSION_DEV_NR}}" "${{ github.run_number }}" >> $GITHUB_ENV
+      -
+        name: Correct env vars tag
+        run: |
+          if [ -z "${{ env.VERSION_MAIN_MAJOR }}" ]; then
+             echo "VERSION_MAIN_MAJOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_MAIN_MINOR }}" ]; then
+             echo "VERSION_MAIN_MINOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_MAIN_Patch }}" ]; then
+             echo "VERSION_MAIN_Patch="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_MAIN_BUILD }}" ]; then
+             echo "VERSION_MAIN_BUILD="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_MAJOR }}" ]; then
+             echo "VERSION_DEV_MAJOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_MINOR }}" ]; then
+             echo "VERSION_DEV_MINOR="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_Patch }}" ]; then
+             echo "VERSION_DEV_Patch="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_BUILD }}" ]; then
+             echo "VERSION_DEV_BUILD="0"" >> $GITHUB_ENV
+          fi
+          if [ -z "${{ env.VERSION_DEV_NR }}" ]; then
+             echo "VERSION_DEV_NR="0"" >> $GITHUB_ENV
+          fi
+      -
+        name: output-bash-env
+        run: |
+          echo "${{ env.VERSION_MAIN_MAJOR }}"
+          echo "${{ env.VERSION_MAIN_MINOR }}"
+          echo "${{ env.VERSION_MAIN_Patch }}"
+          echo "${{ env.VERSION_MAIN_BUILD }}"
+          echo "${{ env.VERSION_DEV_MAJOR }}"
+          echo "${{ env.VERSION_DEV_MINOR }}"
+          echo "${{ env.VERSION_DEV_Patch }}"
+          echo "${{ env.VERSION_DEV_BUILD }}"
+          echo "${{ env.VERSION_DEV_NR }}"
+      - 
+        name: Overwrite version file
+        uses: "DamianReeves/write-file-action@master"
+        with:
+          path: ./version.json
+          write-mode: overwrite
+          contents: |
+            {"VERSION_MAIN_MAJOR": ${{ env.VERSION_MAIN_MAJOR }}, "VERSION_MAIN_MINOR": ${{ env.VERSION_MAIN_MINOR }}, "VERSION_MAIN_Patch": ${{ env.VERSION_MAIN_Patch }}, "VERSION_MAIN_BUILD": ${{ env.VERSION_MAIN_BUILD }}, "VERSION_DEV_MAJOR": ${{ env.VERSION_DEV_MAJOR }}, "VERSION_DEV_MINOR": ${{ env.VERSION_DEV_MINOR }}, "VERSION_DEV_Patch": ${{ env.VERSION_DEV_Patch }}, "VERSION_DEV_BUILD": ${{ env.VERSION_DEV_BUILD }}, "VERSION_DEV_NR": ${{ env.VERSION_DEV_NR }}}
+      - 
+        name: Commit & Push version file
+        uses: Andro999b/push@v1.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.base_ref }}
+          force: true
+          message: 'Update Version by Github Actions'
+      -
+        name: docker tags
+        run: |
+          if [ "${{ github.base_ref }}" = "${{ vars.DEV_BRANCH }}" ]; then
+            echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},ghcr.io/hwr-all-in-one/backend:dev-latest"" >> $GITHUB_ENV
+          elif [ "${{ github.base_ref }}" = "${{ vars.MAIN_BRANCH }}" ]; then
+            echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_MAIN_MAJOR }}.${{ env.VERSION_MAIN_MINOR }}.${{ env.VERSION_MAIN_Patch }}-build${{ env.VERSION_MAIN_BUILD }},ghcr.io/hwr-all-in-one/backend:latest"" >> $GITHUB_ENV
+          fi
+      -
+        name: output docker tags
+        run: |
+          echo ${{ env.BDOCKER_TAGS }}
+      -
+        name: Login to GitHub Package Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }} 
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.DOCKER_TAGS}}

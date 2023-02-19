@@ -9,17 +9,6 @@ import (
 	"github.com/apognu/gocal"
 )
 
-type Lesson struct {
-	Start       *time.Time
-	End         *time.Time
-	Description string
-	Summary     string
-	Location    string
-	Organizer   string
-	Type        string
-	Name        string
-}
-
 func Parse() ([]Lesson, error) {
 	lessons := make([]Lesson, 0)
 	file, err := os.Open("./internal/pkg/timetable/inf.ics")
