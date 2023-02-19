@@ -127,6 +127,10 @@ jobs:
           elif [ github.base_ref = "main" ]; then
             echo "DOCKER_TAGS=ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_MAIN_MAJOR }}.${{ env.VERSION_MAIN_MINOR }}.${{ env.VERSION_MAIN_Patch }}-build${{ env.VERSION_MAIN_BUILD }},ghcr.io/hwr-all-in-one/backend:stabel-latest" >> $GITHUB_ENV
           fi
+      -
+        name: output docker tags
+        run: |
+          echo ${{ env.BDOCKER_TAGS }}
       #-
       #  name: Checkout
       #  uses: actions/checkout@v3
