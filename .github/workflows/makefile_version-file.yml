@@ -123,9 +123,9 @@ jobs:
         name: docker tags
         run: |
           if [ github.base_ref = "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]; then
-            echo "DOCKER_TAGS=ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},ghcr.io/hwr-all-in-one/backend:dev-latest" >> $GITHUB_ENV
+            echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},ghcr.io/hwr-all-in-one/backend:dev-latest"" >> $GITHUB_ENV
           elif [ github.base_ref = "main" ]; then
-            echo "DOCKER_TAGS=ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_MAIN_MAJOR }}.${{ env.VERSION_MAIN_MINOR }}.${{ env.VERSION_MAIN_Patch }}-build${{ env.VERSION_MAIN_BUILD }},ghcr.io/hwr-all-in-one/backend:stabel-latest" >> $GITHUB_ENV
+            echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_MAIN_MAJOR }}.${{ env.VERSION_MAIN_MINOR }}.${{ env.VERSION_MAIN_Patch }}-build${{ env.VERSION_MAIN_BUILD }},ghcr.io/hwr-all-in-one/backend:stabel-latest"" >> $GITHUB_ENV
           fi
       -
         name: output docker tags
