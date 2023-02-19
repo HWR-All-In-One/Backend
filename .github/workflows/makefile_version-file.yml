@@ -21,19 +21,13 @@ jobs:
         with:
           filename: ./version.json
           prefix: fromFile
-      #- name: Echo package.json
-      #  run: echo "${{ steps.package.outputs.content }}" >> "$GITHUB_ENV"
 
   versiontag:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
-      (github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' || github.base_ref == 'main')
+      (github.base_ref == vars.MAIN_BRANCH || github.base_ref == vars.DEV_BRANCH )
     steps:
-      -
-        name: versiontag
-        run: |
-          echo "Dev"
       - 
         uses: actions/checkout@v2
       -
@@ -83,16 +77,6 @@ jobs:
           echo "${{ env.VERSION_DEV_Patch }}"
           echo "${{ env.VERSION_DEV_BUILD }}"
           echo "${{ env.VERSION_DEV_NR }}"
-      #-
-      #  name: Update repository variables
-      #  run: | 
-      #    vars.BACKEND_VERSION_MAIN_MAJOR=$env.VERSION_MAIN_MAJOR
-      #    vars.BACKEND_VERSION_DEV_BUILD=$env.VERSION_DEV_BUILD
-      - 
-        name: Print repository variables
-        run: |
-          echo ${{ env.BACKEND_VERSION_MAIN_MAJOR }}
-          echo ${{ env.BACKEND_VERSION_DEV_BUILD }}
       - 
         name: Overwrite file
         uses: "DamianReeves/write-file-action@master"
@@ -109,43 +93,18 @@ jobs:
           branch: ${{ github.base_ref }}
           force: true
           message: 'Update Version by Github Actions'
-      #- 
-      #  name: Versiontag-dev
-      #  if: ${{ github.base_ref == 'feature/HAIO-96/CI_CD_einrichten_BE-2_Test' }}
-      #  run: |
-      #    echo "Hi, ich bin es"
-      - 
-        name: Branchname
-        run: |
-          echo "GIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
-          echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
       -
         name: docker tags
         run: |
-          if [ "${{ github.base_ref }}" = "feature/HAIO-96/CI_CD_einrichten_BE-2_Test" ]; then
+          if [ "${{ github.base_ref }}" = "${{ vars.DEV_BRANCH }}" ]; then
             echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_DEV_MAJOR }}.${{ env.VERSION_DEV_MINOR }}.${{ env.VERSION_DEV_Patch }}-build${{ env.VERSION_DEV_BUILD }}-dev${{ env.VERSION_DEV_NR }},ghcr.io/hwr-all-in-one/backend:dev-latest"" >> $GITHUB_ENV
-          elif [ "${{ github.base_ref }}" = "main" ]; then
-            echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_MAIN_MAJOR }}.${{ env.VERSION_MAIN_MINOR }}.${{ env.VERSION_MAIN_Patch }}-build${{ env.VERSION_MAIN_BUILD }},ghcr.io/hwr-all-in-one/backend:stabel-latest"" >> $GITHUB_ENV
+          elif [ "${{ github.base_ref }}" = "${{ vars.MAIN_BRANCH }}" ]; then
+            echo "DOCKER_TAGS="ghcr.io/hwr-all-in-one/backend:${{ env.VERSION_MAIN_MAJOR }}.${{ env.VERSION_MAIN_MINOR }}.${{ env.VERSION_MAIN_Patch }}-build${{ env.VERSION_MAIN_BUILD }},ghcr.io/hwr-all-in-one/backend:latest"" >> $GITHUB_ENV
           fi
       -
         name: output docker tags
         run: |
           echo ${{ env.BDOCKER_TAGS }}
-      #-
-      #  name: Checkout
-      #  uses: actions/checkout@v3
-      #-
-      #  name: Docker meta
-      #  id: meta
-      #  uses: docker/metadata-action@v4
-      #  with:
-      #    images: |
-      #      ghcr.io/hwr-all-in-one/backend
-      #    tags: |
-      #      type=ref,event=branch
-      #      type=ref,event=pr
-      #      type=semver,pattern={{version}}
-      #      type=semver,pattern={{major}}.{{minor}} 
       -
         name: Login to GitHub Package Registry
         uses: docker/login-action@v2
