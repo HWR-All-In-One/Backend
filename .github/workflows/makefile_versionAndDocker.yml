@@ -29,13 +29,6 @@ jobs:
     steps:
       - 
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.BOT_ACCESS_TOKEN }}
-      -
-        name: Setup Git for Bot
-        run: |
-          git config user.name "hwraio-org-bot"
-          git config user.email "example@example.com"
       -
         name: use-bash
         run: |
@@ -95,7 +88,7 @@ jobs:
         name: Commit & Push version file
         uses: Andro999b/push@v1.3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
           branch: ${{ github.base_ref }}
           force: true
           message: 'Update Version by Github Actions'
