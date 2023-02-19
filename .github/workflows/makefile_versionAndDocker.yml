@@ -1,4 +1,4 @@
-name: Update Version File
+name: Update Version File And Docker
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     types: [closed]
 
 jobs:
-  read:
+  read-version-file:
     runs-on: ubuntu-latest
       
     steps:
@@ -22,7 +22,7 @@ jobs:
           filename: ./version.json
           prefix: fromFile
 
-  versiontag:
+  versiontag-and-docker:
     runs-on: ubuntu-latest
     if: |
       github.event.pull_request.merged && 
@@ -78,7 +78,7 @@ jobs:
           echo "${{ env.VERSION_DEV_BUILD }}"
           echo "${{ env.VERSION_DEV_NR }}"
       - 
-        name: Overwrite file
+        name: Overwrite version file
         uses: "DamianReeves/write-file-action@master"
         with:
           path: ./version.json
@@ -86,7 +86,7 @@ jobs:
           contents: |
             {"VERSION_MAIN_MAJOR": ${{ env.VERSION_MAIN_MAJOR }}, "VERSION_MAIN_MINOR": ${{ env.VERSION_MAIN_MINOR }}, "VERSION_MAIN_Patch": ${{ env.VERSION_MAIN_Patch }}, "VERSION_MAIN_BUILD": ${{ env.VERSION_MAIN_BUILD }}, "VERSION_DEV_MAJOR": ${{ env.VERSION_DEV_MAJOR }}, "VERSION_DEV_MINOR": ${{ env.VERSION_DEV_MINOR }}, "VERSION_DEV_Patch": ${{ env.VERSION_DEV_Patch }}, "VERSION_DEV_BUILD": ${{ env.VERSION_DEV_BUILD }}, "VERSION_DEV_NR": ${{ env.VERSION_DEV_NR }}}
       - 
-        name: Commit & Push
+        name: Commit & Push version file
         uses: Andro999b/push@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
