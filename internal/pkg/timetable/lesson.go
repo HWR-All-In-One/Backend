@@ -3,12 +3,12 @@ package timetable
 import "time"
 
 type Lesson struct {
-	Start       *time.Time
-	End         *time.Time
-	Description string
-	Summary     string
-	Location    string
-	Organizer   string
-	Type        string
-	Name        string
+	Start   *time.Time
+	End     *time.Time
+	Room    string
+	Teacher string
+	Kind    string
+	Name    string
+	Pause   int
+	Notice  string
 }

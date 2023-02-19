@@ -21,3 +21,4 @@
 # vendor/
 
 pb_data
+*.ics

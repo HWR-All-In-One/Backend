@@ -2,50 +2,59 @@ package timetable
 
 import (
 	"fmt"
-	"os"
+	"net/http"
+	"regexp"
+	"strconv"
 	"strings"
-	"time"
 
-	"github.com/apognu/gocal"
+	ics "github.com/arran4/golang-ical"
 )
 
-func Parse() ([]Lesson, error) {
-	lessons := make([]Lesson, 0)
-	file, err := os.Open("./internal/pkg/timetable/inf.ics")
+const Description = 6
+
+func Parse(url string) (*ics.Calendar, error) {
+	resp, err := http.Get(url)
 
 	if err != nil {
 		return nil, err
 	}
 
-	defer file.Close()
-	start, end := time.Now(), time.Now().Add(12*30*24*time.Hour)
+	return ics.ParseCalendar(resp.Body)
+}
 
-	c := gocal.NewParser(file)
+func DecodeLessons(tt *ics.Calendar) ([]*Lesson, error) {
+	lessons := make([]*Lesson, 0)
 
-	c.Start, c.End = &start, &end
-	err = c.Parse()
+	for _, event := range tt.Events() {
+		v := event.Properties[Description].Value
+		desc := decodeDescription(v)
+		start, err := event.GetStartAt()
 
-	if err != nil {
-		return nil, err
-	}
-
-	for _, value := range c.Events {
-		organizer := ""
-		arr := strings.Split(value.Summary, ";")
-		eventType := arr[0]
-		lessonName := arr[1]
-		if len(arr) >= 3 {
-			organizer = arr[2]
+		if err != nil {
+			return nil, err
 		}
+
+		end, err := event.GetEndAt()
+
+		if err != nil {
+			return nil, err
+		}
+
+		pause, err := strconv.Atoi(desc["pause"])
+
+		if err != nil {
+			return nil, err
+		}
+
 		l := Lesson{
-			Start:       value.Start,
-			End:         value.End,
-			Description: value.Description,
-			Summary:     value.Summary,
-			Location:    value.Location,
-			Organizer:   organizer,
-			Type:        eventType,
-			Name:        lessonName,
+			Start:   &start,
+			End:     &end,
+			Room:    desc["raum"],
+			Teacher: desc["dozent"],
+			Kind:    desc["art"],
+			Notice:  desc["anmerkung"],
+			Name:    desc["veranstaltung"],
+			Pause:   pause,
 		}
 
 		lessons = append(lessons, l)
@@ -53,4 +62,28 @@ func Parse() ([]Lesson, error) {
 	}
 
 	return lessons, nil
+}
+
+func decodeDescription(desc string) map[string]string {
+	arr := strings.Split(desc, "\\n")
+	reg := regexp.MustCompile("[^0-9]+")
+	result := make(map[string]string)
+	for _, value := range arr {
+		k, v := strings.Split(value, ":")[0], strings.Split(value, ":")[1:]
+		kTrim := strings.ToLower(strings.TrimSpace(k))
+		vTrim := strings.TrimSpace(strings.Join(v, ""))
+		result[kTrim] = vTrim
+	}
+
+	result["dozent"] = strings.ReplaceAll(result["dozent"], "\\", "")
+	pause := reg.ReplaceAllString(result["pause"], "")
+
+	if pause == "" {
+		pause = "0"
+	}
+	result["pause"] = pause
+
+	result["anmerkung"] = strings.ReplaceAll(result["anmerkung"], "\\", "")
+
+	return result
 }
