@@ -1,0 +1,66 @@
+package migrations
+
+import (
+	"encoding/json"
+
+	"github.com/pocketbase/dbx"
+	"github.com/pocketbase/pocketbase/daos"
+	m "github.com/pocketbase/pocketbase/migrations"
+	"github.com/pocketbase/pocketbase/models/schema"
+)
+
+func init() {
+	m.Register(func(db dbx.Builder) error {
+		dao := daos.New(db);
+
+		collection, err := dao.FindCollectionByNameOrId("_pb_users_auth_")
+		if err != nil {
+			return err
+		}
+
+		// update
+		edit_timetable_update := &schema.SchemaField{}
+		json.Unmarshal([]byte(`{
+			"system": false,
+			"id": "tjt3d1xn",
+			"name": "timetable_update",
+			"type": "relation",
+			"required": false,
+			"unique": false,
+			"options": {
+				"maxSelect": 1,
+				"collectionId": "rfxs4rahsiaxc9a",
+				"cascadeDelete": false
+			}
+		}`), edit_timetable_update)
+		collection.Schema.AddField(edit_timetable_update)
+
+		return dao.SaveCollection(collection)
+	}, func(db dbx.Builder) error {
+		dao := daos.New(db);
+
+		collection, err := dao.FindCollectionByNameOrId("_pb_users_auth_")
+		if err != nil {
+			return err
+		}
+
+		// update
+		edit_timetable_update := &schema.SchemaField{}
+		json.Unmarshal([]byte(`{
+			"system": false,
+			"id": "tjt3d1xn",
+			"name": "timetable_update",
+			"type": "relation",
+			"required": true,
+			"unique": false,
+			"options": {
+				"maxSelect": 1,
+				"collectionId": "rfxs4rahsiaxc9a",
+				"cascadeDelete": false
+			}
+		}`), edit_timetable_update)
+		collection.Schema.AddField(edit_timetable_update)
+
+		return dao.SaveCollection(collection)
+	})
+}

@@ -21,7 +21,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app.AddRoutes()
 	app.AddHooks()
 
 	err = app.Run()
