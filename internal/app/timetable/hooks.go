@@ -2,7 +2,7 @@ package timetable
 
 import (
 	"errors"
-	"fmt"
+	"time"
 
 	"github.com/HWR-All-In-One/Backend/internal/pkg/timetable"
 	"github.com/pocketbase/dbx"
@@ -33,8 +33,6 @@ func (env *Environment) CheckStatus(e *core.RecordsListEvent) error {
 
 	tt, err := timetable.New(profession, semester, group)
 
-	_ = tt
-
 	if err != nil {
 		return err
 	}
@@ -60,7 +58,11 @@ func (env *Environment) CheckStatus(e *core.RecordsListEvent) error {
 	record := models.NewRecordFromNullStringMap(collection, row)
 
 	if record != nil {
-		fmt.Println("records exist")
+		updated := record.GetTime("updated")
+		now := time.Now()
+
+		_ = updated
+		_ = now
 		// records exits, check if they are old, if not serve if yes fetch new records,
 		// replace the old ones wiht the new ones keep the history.
 		return nil
@@ -74,16 +76,12 @@ func (env *Environment) CheckStatus(e *core.RecordsListEvent) error {
 	}
 
 	err = env.PB.Dao().RunInTransaction(func(txDao *daos.Dao) error {
-
 		for _, record := range tt.Records {
 			err := txDao.SaveRecord(record)
-
 			if err != nil {
 				return err
 			}
-
 		}
-
 		return nil
 	})
 
