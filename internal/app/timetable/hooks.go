@@ -50,20 +50,16 @@ func (env *Environment) CheckStatus(e *core.RecordsListEvent) error {
 	})
 
 	row := dbx.NullStringMap{}
-
-	if err := query.One(&row); err != nil {
-		return err
-	}
-
+	query.One(&row)
 	record := models.NewRecordFromNullStringMap(collection, row)
 
-	if record != nil {
+	if record.Id != "" {
+
 		// records exits, check if they are old, if not serve if yes fetch new records,
 		// replace the old ones wiht the new ones keep the history.
-		updated := record.GetTime("updated")
+		updated := record.GetDateTime("updated").Time()
 		now := time.Now()
 		diff := now.Sub(updated)
-
 		if diff.Minutes() <= 10 {
 			return nil
 		}
@@ -110,7 +106,24 @@ func (env *Environment) CheckStatus(e *core.RecordsListEvent) error {
 			return err
 		}
 
-		return nil
+		past, err := env.PB.Dao().FindRecordsByExpr("timetable", dbx.HashExp{
+			"start": "<" + now.String(),
+		})
+
+		if err != nil {
+			return err
+		}
+		return env.PB.Dao().RunInTransaction(func(txDao *daos.Dao) error {
+			for _, record := range past {
+				record.Set("updated", time.Now())
+				err := txDao.SaveRecord(record)
+				if err != nil {
+					return err
+				}
+			}
+			return nil
+		})
+
 	}
 
 	// fetch the records new becuase they do not exist
