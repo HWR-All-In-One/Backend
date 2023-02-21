@@ -1,7 +1,6 @@
 package timetable
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 
