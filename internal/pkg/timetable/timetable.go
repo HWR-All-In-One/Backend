@@ -3,87 +3,105 @@ package timetable
 import (
 	"fmt"
 	"net/http"
-	"regexp"
-	"strconv"
-	"strings"
+	"net/url"
 
 	ics "github.com/arran4/golang-ical"
+	"github.com/pocketbase/pocketbase/models"
 )
 
-const Description = 6
+const description = 6
 
-func Parse(url string) (*ics.Calendar, error) {
-	resp, err := http.Get(url)
+type Timetable struct {
+	Profession string
+	Semester   string
+	Group      string
+	Url        *url.URL
+	Calendar   *ics.Calendar
+	Records    []*models.Record
+}
+
+func New(profession, semester, group string) (*Timetable, error) {
+	tt := &Timetable{
+		Profession: profession,
+		Semester:   semester,
+		Group:      group,
+	}
+
+	return tt, tt.createUrl()
+}
+
+func (t *Timetable) createUrl() error {
+	semester := "semester" + t.Semester
+	group := "kurs" + t.Group
+	path, err := url.JoinPath("fb2-stundenplaene", t.Profession, semester, group)
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return ics.ParseCalendar(resp.Body)
+	icsUrl := &url.URL{
+		Scheme: "https",
+		Host:   "moodle.hwr-berlin.de",
+		Path:   "fb2-stundenplan/download.php",
+	}
+
+	values := icsUrl.Query()
+	values.Add("doctype", ".ics")
+	values.Add("url", "./"+path)
+	decoded, err := url.QueryUnescape(values.Encode())
+
+	if err != nil {
+		return err
+	}
+
+	icsUrl.RawQuery = decoded
+
+	t.Url = icsUrl
+
+	return nil
 }
 
-func DecodeLessons(tt *ics.Calendar) ([]*Lesson, error) {
-	lessons := make([]*Lesson, 0)
+func (t *Timetable) parse() error {
+	resp, err := http.Get(t.Url.String())
 
-	for _, event := range tt.Events() {
-		v := event.Properties[Description].Value
-		desc := decodeDescription(v)
-		start, err := event.GetStartAt()
-
-		if err != nil {
-			return nil, err
-		}
-
-		end, err := event.GetEndAt()
-
-		if err != nil {
-			return nil, err
-		}
-
-		pause, err := strconv.Atoi(desc["pause"])
-
-		if err != nil {
-			return nil, err
-		}
-
-		l := Lesson{
-			Start:   &start,
-			End:     &end,
-			Room:    desc["raum"],
-			Teacher: desc["dozent"],
-			Kind:    desc["art"],
-			Notice:  desc["anmerkung"],
-			Name:    desc["veranstaltung"],
-			Pause:   pause,
-		}
-
-		lessons = append(lessons, l)
-		fmt.Println(value.Summary)
+	if err != nil {
+		return err
 	}
 
-	return lessons, nil
+	cal, err := ics.ParseCalendar(resp.Body)
+
+	if err != nil {
+		return err
+	}
+
+	t.Calendar = cal
+
+	return nil
 }
 
-func decodeDescription(desc string) map[string]string {
-	arr := strings.Split(desc, "\\n")
-	reg := regexp.MustCompile("[^0-9]+")
-	result := make(map[string]string)
-	for _, value := range arr {
-		k, v := strings.Split(value, ":")[0], strings.Split(value, ":")[1:]
-		kTrim := strings.ToLower(strings.TrimSpace(k))
-		vTrim := strings.TrimSpace(strings.Join(v, ""))
-		result[kTrim] = vTrim
+func (t *Timetable) GetNewRecords(collection *models.Collection) error {
+	err := t.parse()
+
+	if err != nil {
+		return err
 	}
 
-	result["dozent"] = strings.ReplaceAll(result["dozent"], "\\", "")
-	pause := reg.ReplaceAllString(result["pause"], "")
-
-	if pause == "" {
-		pause = "0"
+	for _, lesson := range t.Calendar.Events() {
+		record := models.NewRecord(collection)
+		rawDesc := lesson.Properties[description].Value
+		desc := decodeDescription(rawDesc)
+		start, err := lesson.GetStartAt()
+		if err != nil {
+			return err
+		}
+		end, err := lesson.GetEndAt()
+		if err != nil {
+			return err
+		}
+		record.Set("start", start)
+		record.Set("end", end)
+		t.setAllFields(record, desc)
+		t.Records = append(t.Records, record)
 	}
-	result["pause"] = pause
-
-	result["anmerkung"] = strings.ReplaceAll(result["anmerkung"], "\\", "")
-
-	return result
+	return nil
 }
