@@ -1,7 +1,6 @@
 package timetable
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -57,8 +56,8 @@ func DecodeLessons(tt *ics.Calendar) ([]*Lesson, error) {
 			Pause:   pause,
 		}
 
-		lessons = append(lessons, l)
-		fmt.Println(value.Summary)
+		lessons = append(lessons, &l)
+
 	}
 
 	return lessons, nil
