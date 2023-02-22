@@ -2,12 +2,17 @@ module github.com/HWR-All-In-One/Backend
 
 go 1.19
 
-require github.com/apognu/gocal v0.9.0
+require (
+	github.com/apognu/gocal v0.9.0
+	github.com/arran4/golang-ical v0.0.0-20221122102835-109346913e54
+	github.com/labstack/echo/v5 v5.0.0-20220201181537-ed2888cfa198
+	github.com/pocketbase/dbx v1.8.0
+	github.com/pocketbase/pocketbase v0.11.2
+)
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.6 // indirect
 	github.com/ChannelMeter/iso8601duration v0.0.0-20150204201828-8da3af7a2a61 // indirect
-	github.com/arran4/golang-ical v0.0.0-20221122102835-109346913e54 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/aws/aws-sdk-go v1.44.178 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.17.3 // indirect
@@ -45,14 +50,11 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
-	github.com/labstack/echo/v5 v5.0.0-20220201181537-ed2888cfa198 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/pocketbase/dbx v1.8.0 // indirect
-	github.com/pocketbase/pocketbase v0.11.2 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20220927061507-ef77025ab5aa // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
