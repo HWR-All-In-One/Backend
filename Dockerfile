@@ -9,6 +9,9 @@ COPY go.mod .
 COPY go.sum .
 COPY /cmd/main.go .
 COPY /internal ./internal
+COPY /migrations ./migrations
+COPY /pb_migrations ./pb_migrations
+COPY version.json ./version.json
 
 RUN go install
 RUN go build -o /godocker .
