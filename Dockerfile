@@ -2,7 +2,7 @@ FROM golang:1.19.5
 
 ENV PORT 8090 
 
-RUN mkdir /app
+#RUN mkdir /app
 WORKDIR /app
 
 COPY go.mod .
@@ -10,7 +10,7 @@ COPY go.sum .
 COPY /cmd/main.go .
 COPY /internal ./internal
 
-RUN go mod download
+RUN go install
 RUN go build -o /godocker .
 
 EXPOSE $PORT
